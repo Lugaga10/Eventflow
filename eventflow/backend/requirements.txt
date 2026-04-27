@@ -1,0 +1,25 @@
+# ─── Core Django ─────────────────────────────────────────────────────────────
+Django==4.2.13
+djangorestframework==3.15.1
+djangorestframework-simplejwt==5.3.1   
+django-cors-headers==4.3.1
+
+# ─── Database ────────────────────────────────────────────────────────────────
+psycopg2-binary==2.9.9                  
+
+# ─── SMS (Africa's Talking) ──────────────────────────────────────────────────
+africastalking==1.2.8
+
+# ─── HTTP requests (M-Pesa API calls) ────────────────────────────────────────
+requests==2.31.0
+
+
+celery==5.3.6
+redis==5.0.1
+django-celery-beat==2.6.0             
+
+# ─── Image handling (for event images) ───────────────────────────────────────
+Pillow==10.2.0
+
+# ─── Environment variables ───────────────────────────────────────────────────
+python-dotenv==1.0.1
