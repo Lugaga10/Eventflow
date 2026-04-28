@@ -6,14 +6,9 @@ import AdminPortal from "./pages/AdminPortal";
 import AuthModal from "./components/AuthModal";
 
 
-const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-
-const API_BASE = isLocalhost 
-  ? (import.meta.env.VITE_API_BASE_LOCAL || "http://localhost:8000/api")
-  : (import.meta.env.VITE_API_BASE_PROD || "https://eventflow-pja4.onrender.com");
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000/api";
 
 export { API_BASE };
-
 
 export const ThemeContext = createContext({ theme: "dark", toggleTheme: () => {} });
 export const useTheme = () => useContext(ThemeContext);
@@ -35,6 +30,7 @@ export default function App() {
     localStorage.setItem("ef_theme", next);
   };
 
+  // Apply theme to body
   useEffect(() => {
     document.body.style.background = theme === "dark" ? "#0A0A0F" : "#F1F5F9";
     document.body.style.color = theme === "dark" ? "#F0F0F5" : "#0F172A";
@@ -43,15 +39,18 @@ export default function App() {
     document.body.style.transition = "background 0.3s, color 0.3s";
   }, [theme]);
 
+  // Set immediately before first render to avoid flash
   document.body.style.background = theme === "dark" ? "#0A0A0F" : "#F1F5F9";
   document.body.style.color = theme === "dark" ? "#F0F0F5" : "#0F172A";
   document.body.style.margin = "0";
   document.body.style.padding = "0";
 
+  // Check for hidden admin URL
   useEffect(() => {
     if (window.location.hash === "#/admin-portal-secure") setView("admin");
   }, []);
 
+  // Restore session on load
   useEffect(() => {
     if (token) fetchMe(token);
     if (adminToken) fetchAdminMe(adminToken);
@@ -59,7 +58,9 @@ export default function App() {
 
   const fetchMe = async (t) => {
     try {
-      const res = await fetch(`${API_BASE}/auth/me/`, { headers: { Authorization: `Token ${t}` } });
+      const res = await fetch(`${API_BASE}/auth/me/`, {
+        headers: { Authorization: `Token ${t}` },
+      });
       if (res.ok) {
         const data = await res.json();
         setCurrentUser(data);
@@ -73,7 +74,9 @@ export default function App() {
 
   const fetchAdminMe = async (t) => {
     try {
-      const res = await fetch(`${API_BASE}/auth/admin-me/`, { headers: { Authorization: `Token ${t}` } });
+      const res = await fetch(`${API_BASE}/auth/admin-me/`, {
+        headers: { Authorization: `Token ${t}` },
+      });
       if (res.ok) {
         const data = await res.json();
         setAdminUser(data);
@@ -89,7 +92,6 @@ export default function App() {
     setCurrentUser(userData);
     setToken(userToken);
     localStorage.setItem("ef_token", userToken);
-    // Route based on role
     setView(userData.role === "attendee" ? "attendee" : "organizer");
     setAuthModal(null);
   };
@@ -119,19 +121,41 @@ export default function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {view === "admin" && (
-        <AdminPortal adminUser={adminUser} adminToken={adminToken} onLogin={handleAdminLogin} onLogout={handleAdminLogout} />
+        <AdminPortal
+          adminUser={adminUser}
+          adminToken={adminToken}
+          onLogin={handleAdminLogin}
+          onLogout={handleAdminLogout}
+        />
       )}
       {view === "organizer" && currentUser && (
-        <OrganizerPortal user={currentUser} token={token} onLogout={handleLogout} />
+        <OrganizerPortal
+          user={currentUser}
+          token={token}
+          onLogout={handleLogout}
+        />
       )}
       {view === "attendee" && currentUser && (
-        <AttendeeDashboard user={currentUser} token={token} onLogout={handleLogout} />
+        <AttendeeDashboard
+          user={currentUser}
+          token={token}
+          onLogout={handleLogout}
+        />
       )}
       {view === "public" && (
         <>
-          <PublicSite onOpenAuth={(mode) => setAuthModal(mode)} currentUser={currentUser} onGoToDashboard={() => setView(currentUser?.role === "attendee" ? "attendee" : "organizer")} />
+          <PublicSite
+            onOpenAuth={(mode) => setAuthModal(mode)}
+            currentUser={currentUser}
+            onGoToDashboard={() => setView(currentUser?.role === "attendee" ? "attendee" : "organizer")}
+          />
           {authModal && (
-            <AuthModal mode={authModal} onClose={() => setAuthModal(null)} onLogin={handleLogin} onSwitchMode={(m) => setAuthModal(m)} />
+            <AuthModal
+              mode={authModal}
+              onClose={() => setAuthModal(null)}
+              onLogin={handleLogin}
+              onSwitchMode={(m) => setAuthModal(m)}
+            />
           )}
         </>
       )}
