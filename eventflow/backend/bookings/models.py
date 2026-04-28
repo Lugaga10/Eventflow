@@ -77,3 +77,5 @@ class Booking(models.Model):
             self.ticket_tier.available -= self.quantity
             self.ticket_tier.save(update_fields=['available'])
         self.save()
+        # bookings/models.py
+confirmation_sms_sent = models.BooleanField(default=False)
