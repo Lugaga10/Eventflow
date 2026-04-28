@@ -15,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ─── SECURITY ───────────────────────────────────────────────────────────────
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "replace-this-secret-key-in-production")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", os.environ.get("ALLOWED_HOST", "")]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1",'eventflow-backend.onrender.com',os.environ.get("ALLOWED_HOST", "")]
 
 # ─── INSTALLED APPS ──────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -107,6 +107,8 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    "https://eventflow-pja4.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 

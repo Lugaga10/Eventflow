@@ -5,8 +5,15 @@ import AttendeeDashboard from "./pages/AttendeeDashboard";
 import AdminPortal from "./pages/AdminPortal";
 import AuthModal from "./components/AuthModal";
 
-const API_BASE = "http://localhost:8000/api";
+
+const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+const API_BASE = isLocalhost 
+  ? (import.meta.env.VITE_API_BASE_LOCAL || "http://localhost:8000/api")
+  : (import.meta.env.VITE_API_BASE_PROD || "https://eventflow-pja4.onrender.com");
+
 export { API_BASE };
+
 
 export const ThemeContext = createContext({ theme: "dark", toggleTheme: () => {} });
 export const useTheme = () => useContext(ThemeContext);
