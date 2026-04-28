@@ -12,6 +12,9 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
 # ─── SECURITY ───────────────────────────────────────────────────────────────
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "replace-this-secret-key-in-production")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
