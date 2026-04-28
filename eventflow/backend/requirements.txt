@@ -19,7 +19,7 @@ redis==5.0.1
 django-celery-beat==2.6.0             
 
 # ─── Image handling (for event images) ───────────────────────────────────────
-Pillow==10.2.0
+Pillow==11.1.0
 
 # ─── Environment variables ───────────────────────────────────────────────────
 python-dotenv==1.0.1
