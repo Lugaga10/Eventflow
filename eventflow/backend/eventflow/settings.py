@@ -157,7 +157,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app', 'eventflow-1-3lb9.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','soupier-grayce-preternaturally.ngrok-free.dev','.ngrok-free.app', 'eventflow-1-3lb9.onrender.com']
 
 DATABASES = {
     'default': env.db()
