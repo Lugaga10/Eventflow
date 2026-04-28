@@ -1,8 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { API_BASE, ThemeContext } from "../App";
 
-const GOOGLE_CLIENT_ID = "93437251220-idklvpg072387op17oibgf86k726nmvg.apps.googleusercontent.com";
-
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
