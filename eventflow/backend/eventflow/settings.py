@@ -1,8 +1,3 @@
-"""
-EventFlow Django Settings
-========================
-Loads secrets from .env  — run: cp .env.example .env then fill in values.
-"""
 
 from pathlib import Path
 import os
@@ -130,16 +125,6 @@ MPESA_CALLBACK_URL = os.environ.get("MPESA_CALLBACK_URL", "https://yourdomain.co
 MPESA_ENVIRONMENT = os.environ.get("MPESA_ENVIRONMENT", "sandbox")
 MPESA_BASE_URL = "https://sandbox.safaricom.co.ke" if MPESA_ENVIRONMENT == "sandbox" else "https://api.safaricom.co.ke"
 
-# ─── SMS (Africa's Talking - widely used in Kenya) ───────────────────────────
-# Get these from https://africastalking.com
-# 1. Create account at africastalking.com
-# 2. Get API Key from Settings > API Key
-# 3. For sandbox testing use username "sandbox"
-AFRICASTALKING_USERNAME = os.environ.get("AT_USERNAME", "<<<REPLACE_ME>>>")     # Your AT username
-AFRICASTALKING_API_KEY = os.environ.get("AT_API_KEY", "<<<REPLACE_ME>>>")       # Your AT API key
-AFRICASTALKING_SENDER_ID = os.environ.get("AT_SENDER_ID", "EventFlow")          # Your registered sender ID
-# Environment: "sandbox" for testing, "production" for live
-AFRICASTALKING_ENVIRONMENT = os.environ.get("AT_ENVIRONMENT", "sandbox")
 
 # ─── STATIC & MEDIA ──────────────────────────────────────────────────────────
 STATIC_URL = "/static/"
@@ -153,13 +138,20 @@ TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
 
+import os
 import environ
-env = environ.Env()
-environ.Env.read_env()
+env = environ.Env(
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, 'django-insecure-local-dev-key-change-in-production'),
+)
+
+# Read .env file if it exists (local development)
+BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
-DEBUG = env.bool('DEBUG', default=False)
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost'])
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 DATABASES = {
     'default': env.db()
